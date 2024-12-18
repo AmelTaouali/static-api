@@ -1,0 +1,13 @@
+{
+    "name": "static-api",
+    "version": "1.0.0",
+    "description": "A simple static API",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.21.2"
+    }
+  }
+  
