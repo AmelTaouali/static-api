@@ -1,30 +1,40 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE = 'amel223/static-api'  
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/AmelTaouali/static-api.git'
+                git 'https://github.com/AmelTaouali/static-api'
             }
         }
-        stage('Build Docker Image') {
+        stage('build docker image') {
             steps {
                 script {
-                    sh 'docker build -t amel223/static-api:latest .'
+                  docker.build("${DOCKER_IMAGE}:latest")
                 }
             }
         }
-        stage('Push to Docker Hub') {
+
+        stage('push to Docker Hub') {
             steps {
                 script {
-                    sh 'docker login -u "amel223" -p "Yahyabouhlel123*"'
-                    sh 'docker push amel223/static-api:latest'
+                    docker.withRegistry('https://registry.hub.docker.com', 'LoginDockerHub') {
+                        docker.image("${DOCKER_IMAGE}:latest").push()
+                    }
                 }
             }
         }
-        stage('Deploy Container') {
+    stage('Deploy Container') {
             steps {
                 script {
-                    sh 'docker run -d -p 4000:4000 amel223/static-api:latest'
+                    docker.withRegistry('https://registry.hub.docker.com', 'LoginDockerHub') {
+                        def docker_image = docker.image("${DOCKER_IMAGE}:latest")
+                        docker_image.run('--name Mini-Projet -p 8060:8060')
+                    }
                 }
             }
         }

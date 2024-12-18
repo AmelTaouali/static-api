@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello, this is my static API!');
+app.use('/', (req, res) => {
+    res.send("Hello , i'm amel taouali");
 });
 
-const PORT = 4000;
+const PORT = 8060;
 app.listen(PORT, () => {
     console.log(`API running on http://localhost:${PORT}`);
 });
